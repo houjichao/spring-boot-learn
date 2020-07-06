@@ -13,6 +13,7 @@ import javax.servlet.ServletResponse;
 
 /**
  * 参数校验拦截器，拦截前端请求，对自定义参数按照JSR-303规范进行校验
+ *
  * @author houjichao
  */
 @Aspect
@@ -32,11 +33,11 @@ public class ValidateInterceptor {
 
     /**
      * 参数校验拦截器
+     *
      * @param joinPoint 用于获取请求参数信息
      */
     @Before("pointcut()")
     public void valid(JoinPoint joinPoint) {
-
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
             if (arg instanceof ServletRequest || arg instanceof ServletResponse) {
