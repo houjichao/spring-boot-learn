@@ -1,5 +1,7 @@
 package com.hjc.learn.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -14,6 +16,7 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = -5915747598060705898L;
 
+    @TableId
     private Long id;
 
     @ApiModelProperty(value = "用户名")
@@ -22,4 +25,8 @@ public class User implements Serializable {
 
     private Integer age;
     private String email;
+
+    @TableLogic
+    private Integer deleted;
+
 }
