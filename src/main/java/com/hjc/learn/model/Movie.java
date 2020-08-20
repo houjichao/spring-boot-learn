@@ -9,11 +9,11 @@ import javax.validation.constraints.NotBlank;
 /**
  * @author houjichao
  */
-@ApiModel("用户对象实体")
+@ApiModel("电影对象实体")
 @Data
-public class User {
+public class Movie {
 
-    @ApiModelProperty(value = "用户名")
+    @ApiModelProperty(value = "电影名")
     @NotBlank(message = "201001")
     private String name;
 

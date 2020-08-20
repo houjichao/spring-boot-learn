@@ -3,7 +3,7 @@ package com.hjc.learn.model.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.hjc.learn.model.User;
+import com.hjc.learn.model.Movie;
 import com.hjc.learn.model.view.View;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -16,14 +16,14 @@ import java.util.List;
 public class CommonResponse {
     @JsonProperty(value = "is_success")
     @JsonView(View.BasicView.class)
-    private boolean isSuccess;
+    private boolean isSuccess = true;
 
     @JsonView(View.BasicView.class)
     @ApiModelProperty(hidden = true)
     private String message;
 
     @JsonView(View.User.class)
-    private List<User> users;
+    private List<Movie> users;
 
     public boolean getIsSuccess() {
         return isSuccess;
@@ -41,11 +41,11 @@ public class CommonResponse {
         this.message = message;
     }
 
-    public List<User> getUsers() {
+    public List<Movie> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(List<Movie> users) {
         this.users = users;
     }
 }

@@ -1,10 +1,10 @@
 package com.hjc.learn;
 
 import io.swagger.annotations.Api;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -18,9 +18,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * @author houjichao
  */
-@SpringBootApplication
-@ComponentScan(basePackages = "com.hjc.learn")
+@SpringBootApplication(scanBasePackages = "com.hjc.learn")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
+@MapperScan("com.hjc.learn.mapper")
 @EnableSwagger2
 public class SpringBootLearnApplication {
 
