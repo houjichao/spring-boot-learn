@@ -8,11 +8,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+
+import java.util.List;
 
 /**
  * <p>
@@ -31,16 +35,22 @@ public class UserController{
     UserService userService;
 
     @ApiOperation(value = "新增用户")
-    @PostMapping(value = "/user")
+    @PostMapping(value = "")
     public CommonResponse save(@RequestBody User user) {
         userService.saveOrUpdate(user);
         return new CommonResponse();
     }
 
     @ApiOperation(value = "删除用户")
-    @DeleteMapping(value = "/user/{id}")
+    @DeleteMapping(value = "/{id}")
     public CommonResponse save(@PathVariable Long id) {
-        userService.deleteById(id);
+        userService.removeById(id);
         return new CommonResponse();
+    }
+
+    @ApiOperation(value = "查询所有用户用户")
+    @GetMapping(value = "")
+    public Flux<List<User>> getAll() {
+        return Flux.just(userService.list());
     }
 }

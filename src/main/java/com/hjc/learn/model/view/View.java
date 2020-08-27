@@ -10,4 +10,7 @@ public interface View {
 
     interface User extends BasicView {
     }
+
+    interface Movie extends BasicView {
+    }
 }
