@@ -98,7 +98,12 @@ public class WebFluxController {
      */
     private String doThing(String msg) {
         try {
-            TimeUnit.SECONDS.sleep(5);
+            long time = System.currentTimeMillis();
+            for (int i = 0; 1_000_0 > i; i++) {
+                Thread.sleep(1L);
+                log.info(i+"-----------------------");
+            }
+            System.out.println(System.currentTimeMillis()-time);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
