@@ -17,4 +17,8 @@ public class Movie {
     @NotBlank(message = "201001")
     private String name;
 
+
+    @ApiModelProperty(value = "导演")
+    private String director;
+
 }
