@@ -13,6 +13,15 @@ import java.util.List;
 @Data
 public class Person {
 
+    public Person(String name, Integer age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public Person() {
+
+    }
+
     @ApiModelProperty(value = "姓名")
     private String name;
 
