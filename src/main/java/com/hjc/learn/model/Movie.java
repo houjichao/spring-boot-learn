@@ -21,4 +21,11 @@ public class Movie {
     @ApiModelProperty(value = "导演")
     private String director;
 
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "name='" + name + '\'' +
+                ", director='" + director + '\'' +
+                '}';
+    }
 }
