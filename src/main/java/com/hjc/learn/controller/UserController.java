@@ -6,6 +6,7 @@ import com.hjc.learn.model.response.CommonResponse;
 import com.hjc.learn.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @Api(tags = "用户管理")
+@Slf4j
 public class UserController{
 
     @Autowired
@@ -44,6 +46,7 @@ public class UserController{
     @ApiOperation(value = "删除用户")
     @DeleteMapping(value = "/{id}")
     public CommonResponse save(@PathVariable Long id) {
+        log.info("删除用户id:{}", id);
         userService.removeById(id);
         return new CommonResponse();
     }
