@@ -1,9 +1,13 @@
 package com.hjc.learn.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -65,19 +69,59 @@ public class RedisController {
         String value1 = "93";
         String value2 = "95";
         List<String> keyList = Arrays.asList("houjichao", "gaoxin");
+        List<String> valueList = Arrays.asList("1993", "1995");
         Long result = (Long) redisTemplate.execute(rs, argsSerializer, resultSerializer, keyList, value1, value2);
         Object gaoxin = redisTemplate.opsForValue().get("gaoxin");
         if (gaoxin != null) {
             System.out.println(gaoxin.toString());
         }
-        /*Integer result = (Integer) redisTemplate.execute(
+        /**
+         * 这里如果用integer接也会有问题
+         *
+         *     protected <T> CommandOutput<K, V, T> newScriptOutput(RedisCodec<K, V> codec, ScriptOutputType type) {
+         *         switch(type) {
+         *         case BOOLEAN:
+         *             return new BooleanOutput(codec);
+         *         case INTEGER:
+         *             return new IntegerOutput(codec);
+         *         case STATUS:
+         *             return new StatusOutput(codec);
+         *         case MULTI:
+         *             return new NestedMultiOutput(codec);
+         *         case VALUE:
+         *             return new ValueOutput(codec);
+         *         default:
+         *             throw new RedisException("Unsupported script output type");
+         *         }
+         *     }
+         *
+         * public class IntegerOutput<K, V> extends CommandOutput<K, V, Long> {
+         *     public IntegerOutput(RedisCodec<K, V> codec) {
+         *         super(codec, (Object)null);
+         *     }
+         *
+         *     public void set(long integer) {
+         *         this.output = integer;
+         *     }
+         *
+         *     public void set(ByteBuffer bytes) {
+         *         this.output = null;
+         *     }
+         * }
+         */
+        Long result1 = (Long) redisTemplate.execute(
                 (RedisConnection connection) -> connection.eval(
                         lua.getBytes(),
                         ReturnType.INTEGER,
-                        1,
-                        String.valueOf(keyList).getBytes(),
-                        value1.getBytes(), value2.getBytes())
-        );*/
+                        //用于指定键名的个数
+                        2,
+                        "houjichao".getBytes(),
+                        "gaoxin".getBytes(),
+                        "1993".getBytes(),
+                        "1995".getBytes())
+        );
+        ReturnType returnType = ReturnType.fromJavaType(Long.class);
         System.out.println(result);
+        System.out.println("result1 "+result1);
     }
 }
