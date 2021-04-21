@@ -14,7 +14,7 @@ import java.io.IOException;
  * @author houjichao
  */
 @Slf4j
-public class StreamDemo {
+public class FileStreamDemo {
 
     public static void main(String[] args) throws FileNotFoundException {
         long begin = System.currentTimeMillis();
