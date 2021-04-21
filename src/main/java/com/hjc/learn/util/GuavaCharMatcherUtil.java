@@ -78,6 +78,8 @@ public class GuavaCharMatcherUtil {
 
         result = CharMatcher.is('a').trimAndCollapseFrom(input, '-');
         System.out.println(result);
+
+        System.out.println("4".compareTo("4222"));
     }
 
 }
