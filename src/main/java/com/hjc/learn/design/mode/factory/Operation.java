@@ -1,7 +1,7 @@
 package com.hjc.learn.design.mode.factory;
 
 /**
- * https://blog.csdn.net/pnjlc/article/details/52671310?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control&dist_request_id=&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control
+ * 抽象产品角色
  *
  * @author houjichao
  */
