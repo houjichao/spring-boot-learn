@@ -11,7 +11,7 @@ package com.hjc.learn.design.mode.factory;
  *  * ————————————————
  *  * 原文链接：https://blog.csdn.net/pnjlc/article/details/52671310
  *
- * 工厂模式工厂角色
+ * 简单工厂模式工厂角色
  *
  * 场景
  * *工厂类负责创建的对象比较少

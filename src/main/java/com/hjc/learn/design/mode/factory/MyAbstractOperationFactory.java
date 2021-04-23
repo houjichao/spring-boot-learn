@@ -6,15 +6,17 @@ package com.hjc.learn.design.mode.factory;
  * @author houjichao
  */
 public class MyAbstractOperationFactory extends AbstractOperationFactory {
+
     @Override
     public <T extends Operation> T createOperation(Class<T> clz) {
         Operation operation = null;
         String classname = clz.getName();
-        try{
-            operation = (Operation)Class.forName(classname).newInstance();
-        }catch(Exception e){
+        try {
+            operation = (Operation) Class.forName(classname).newInstance();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return (T) operation;
     }
+
 }

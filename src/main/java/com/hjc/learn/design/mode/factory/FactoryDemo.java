@@ -1,6 +1,8 @@
 package com.hjc.learn.design.mode.factory;
 
 /**
+ * 简单工厂模式测试
+ *
  * @author houjichao
  */
 public class FactoryDemo {
