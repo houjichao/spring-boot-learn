@@ -13,6 +13,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UserService extends IService<User> {
 
+    /**
+     * 删除用户
+     *
+     * @param id 用户id
+     * @return 是否删除成功
+     */
     Boolean deleteById(Long id);
 
 }
