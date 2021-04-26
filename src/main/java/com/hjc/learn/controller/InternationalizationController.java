@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/v1/movie")
-@Api(tags = "影片管理")
+@Api(tags = "影片管理--国际化实现")
 public class InternationalizationController {
 
     @ApiOperation(value = "新增影片")
