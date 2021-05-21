@@ -1,6 +1,6 @@
 package com.hjc.learn.service.impl;
 
-import com.hjc.learn.service.Map;
+import com.hjc.learn.service.MyMap;
 
 /**
  * HashMap
@@ -29,17 +29,17 @@ import com.hjc.learn.service.Map;
  *
  * @author houjichao
  */
-public class HashMap<K, V> implements Map<K, V> {
+public class MyHashMap<K, V> implements MyMap<K, V> {
     private static int defaultLength = 16;
     private static double defaultLoader = 0.75;
     private Entry<K, V>[] table = null;
     private int size = 0;
 
-    public HashMap() {
+    public MyHashMap() {
         this(defaultLength, defaultLoader);
     }
 
-    public HashMap(int length, double loader) {
+    public MyHashMap(int length, double loader) {
         defaultLength = length;
         defaultLoader = loader;
         table = new Entry[defaultLength];
@@ -78,7 +78,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
     }
 
-    public V find(K k, HashMap<K, V>.Entry<K, V> entry) {
+    public V find(K k, MyHashMap<K, V>.Entry<K, V> entry) {
         if (k == entry.getK() || k.equals((entry.getK()))) { //判断key值是否相等
             return entry.getV();
         } else {
@@ -94,7 +94,7 @@ public class HashMap<K, V> implements Map<K, V> {
         return 0;
     }
 
-    class Entry<K, V> implements Map.Entry<K, V> {
+    class Entry<K, V> implements MyMap.Entry<K, V> {
         K k;
         V v;
         Entry<K, V> next;
