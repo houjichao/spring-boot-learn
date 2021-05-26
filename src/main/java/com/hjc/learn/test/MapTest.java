@@ -22,6 +22,8 @@ public class MapTest {
         all.putAll(temp1);
         all.putAll(temp2);
         System.out.println(all);
+        String str = "_o92dfadbddcda49c6ab208312cf6f4a55";
+        System.out.println(str.substring(1));
     }
 
 }
