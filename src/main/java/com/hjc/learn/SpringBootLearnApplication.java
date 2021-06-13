@@ -12,6 +12,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.scheduling.annotation.EnableAsync;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -28,6 +29,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @MapperScan("com.hjc.learn.mapper")
 @EnableSwagger2
 @EnableDiscoveryClient
+@EnableAsync
 public class SpringBootLearnApplication {
 
     public static void main(String[] args) {

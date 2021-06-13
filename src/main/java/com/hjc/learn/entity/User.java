@@ -23,7 +23,10 @@ public class User implements Serializable {
     @NotBlank(message = "202001")
     private String name;
 
+    @ApiModelProperty(value = "年龄")
     private Integer age;
+
+    @ApiModelProperty(value = "邮箱")
     private String email;
 
     @TableLogic

@@ -3,6 +3,7 @@ package com.hjc.learn.controller;
 
 import com.hjc.learn.entity.User;
 import com.hjc.learn.model.response.CommonResponse;
+import com.hjc.learn.service.PublisherService;
 import com.hjc.learn.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,15 +32,18 @@ import java.util.List;
 @RequestMapping("/user")
 @Api(tags = "用户管理")
 @Slf4j
-public class UserController{
+public class UserController {
 
     @Autowired
     UserService userService;
 
+    @Autowired
+    PublisherService publisherService;
+
     @ApiOperation(value = "新增用户")
     @PostMapping(value = "")
     public CommonResponse save(@RequestBody User user) {
-        userService.saveOrUpdate(user);
+        userService.saveUser(user);
         return new CommonResponse();
     }
 
@@ -49,6 +53,16 @@ public class UserController{
         log.info("删除用户id:{}", id);
         userService.removeById(id);
         return new CommonResponse();
+    }
+
+    @ApiOperation(value = "根据id查询单个用户")
+    @GetMapping(value = "/{id}")
+    public User getById(@PathVariable Long id) {
+        //这里其实可以是查询某个用户信息后，查看是否新注册用户后是否成功发送邮件或者发送体验券，如未成功，调用补偿机制的方法
+        //为了方便，直接调用实现效果即可
+        //由于方法是异步的，并不影响查询
+        publisherService.tolerant();
+        return userService.getById(id);
     }
 
     @ApiOperation(value = "查询所有用户用户")
