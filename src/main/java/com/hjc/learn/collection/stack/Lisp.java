@@ -17,8 +17,10 @@ public class Lisp {
     public static void main(String[] args) {
         String s5 = "(div 8 0)";
         String s6 = "(add (sub (div 8 2) (mul 1 9)) 20)";
+        String s7 = "(add 3 5)";
         System.out.println(getResult(s5));
         System.out.println(getResult(s6));
+        System.out.println(getResult(s7));
     }
 
     public static String getResult(String input) {
@@ -40,7 +42,7 @@ public class Lisp {
                 if (stack.isEmpty() || "error".equals(single)) {
                     return single;
                 }
-                stack.push(new StringBuffer(single).reverse().toString());
+                stack.push(new StringBuilder(single).reverse().toString());
             }
         }
         return null;
