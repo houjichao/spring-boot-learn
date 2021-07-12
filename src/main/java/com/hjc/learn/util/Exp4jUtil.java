@@ -1,11 +1,15 @@
 package com.hjc.learn.util;
 
+import lombok.extern.slf4j.Slf4j;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.ValidationResult;
 import net.objecthunter.exp4j.function.Function;
 import net.objecthunter.exp4j.operator.Operator;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,16 +23,19 @@ import java.util.concurrent.Future;
  *
  * @author houjichao
  */
+@Slf4j
 public class Exp4jUtil {
 
 
     /**
      * 利用计算公式计算结果
+     *
      * @param expressionStr 数学公式
-     * @param variables 变量
+     * @param variables     变量
+     * @param decimalDigits 保留小数位数，四舍五入
      * @return 计算结果
      */
-    public static Double calculation(String expressionStr, Map<String,Double> variables) {
+    public static Double calculation(String expressionStr, Map<String, Double> variables, Integer decimalDigits) {
         /*
            变量名称必须以字母或下划线_开头，并且只能包含字母，数字或下划线。
            以下是有效的变量名称：
@@ -37,31 +44,67 @@ public class Exp4jUtil {
            _var_X_1
            而1_var_x不是，因为它不是以字母或下划线开头。
          */
-        // 1.构建表达式
-        Set<String> variablesKey = variables.keySet();
-        Expression expression = new ExpressionBuilder(expressionStr).variables(variablesKey).build();
-        // 2.循环放置变量
-        expression.setVariables(variables);
-        return expression.evaluate();
+        log.info("Exp4jUtil.calculation计算表达式为:{};;;;计算参数为{}", expressionStr, variables.toString());
+        if (StringUtils.isNotBlank(expressionStr)) {
+            // 1.判断表达式有变量参数，但是变量中没有 或数量不匹配
+            if (expressionStr.contains("_") && CollectionUtils.isEmpty(variables)) {
+                return null;
+            }
+            /*int variablesCount = CharMatcher.is('_').countIn(expressionStr);
+            if (variablesCount < variablesKey.size()) {
+                return null;
+            }*/
+            boolean variablesIllegal = false;
+            for (Map.Entry<String, Double> map : variables.entrySet()) {
+                if (map.getValue() == null) {
+                    variablesIllegal = true;
+                    break;
+                }
+            }
+            if (variablesIllegal) {
+                return null;
+            }
+            Set<String> variablesKey = variables.keySet();
+            // 2.构建表达式
+            Expression expression = new ExpressionBuilder(expressionStr).variables(variablesKey).build();
+            // 3.循环放置变量
+            expression.setVariables(variables);
+            // 4.校验
+            ValidationResult validate = expression.validate();
+            if (!validate.isValid()) {
+                return null;
+            }
+            try {
+                // 5.计算结果，进行小数位四舍五入
+                double result = expression.evaluate();
+                BigDecimal bigDecimal = new BigDecimal(result);
+                result = bigDecimal.setScale(decimalDigits, BigDecimal.ROUND_HALF_UP).doubleValue();
+                return result;
+            } catch (ArithmeticException e) {
+                log.error("Exp4jUtil.calculation计算结果错误，表达式:{}，参数为{}", expressionStr, variables.toString());
+            }
+        }
+        return null;
     }
 
     /**
-     * 验证表达式
+     * 检查表达式
+     *
+     * @param expressionStr 数学公式
+     * @param variables     变量
      */
-    public static void checkExpression() {
-        Expression e = new ExpressionBuilder("[(2*3)+ (3*4)+(4*5)]/x")
-                .variable("x")
-                .build();
-
-        ValidationResult res = e.validate();
-        boolean valid = res.isValid();
-        System.out.println(valid);
-        List<String> errors = res.getErrors();
-        errors.forEach(System.out::println);
-
-        e.setVariable("x", 1d);
-        res = e.validate();
-        System.out.println(res.isValid());
+    public static Boolean checkExpression(String expressionStr, Map<String, Double> variables) {
+        if (StringUtils.isNotBlank(expressionStr)) {
+            // 1.构建表达式
+            Set<String> variablesKey = variables.keySet();
+            Expression expression = new ExpressionBuilder(expressionStr).variables(variablesKey).build();
+            // 2.循环放置变量
+            expression.setVariables(variables);
+            // 3.校验
+            ValidationResult validate = expression.validate();
+            return validate.isValid();
+        }
+        return false;
     }
 
     /**
@@ -99,7 +142,7 @@ public class Exp4jUtil {
      */
     public static void example3() {
         double result = new ExpressionBuilder("2cos(xy)")
-                .variables("x","y")
+                .variables("x", "y")
                 .build()
                 .setVariable("x", 0.5d)
                 .setVariable("y", 0.25d)
@@ -185,12 +228,12 @@ public class Exp4jUtil {
     /**
      * 您可以扩展抽象类Operator，以便声明供表达式使用的自定义运算符，符号是一个由！，＃，§，$，＆，;，：，〜，<，>，|，==组成的String 。。
      * 请注意，添加带有已使用符号的运算符会覆盖任何现有运算符，包括内置运算符。因此可以覆盖例如+运算符。运算符的构造函数最多包含4个参数：
-     *
+     * <p>
      * 用于此操作的符号（由！，＃，§，$，＆，;，：，〜，<，>，|，==组成的字符串）
      * 如果操作是关联的
      * 操作的优先级
      * 运算符具有的操作数（1或2）
-     *
+     * <p>
      * 创建用于计算阶乘的自定义运算符
      */
     public static void example8() {
@@ -282,7 +325,7 @@ public class Exp4jUtil {
     }
 
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         Expression e = new ExpressionBuilder("[(2*3)+ (3*4)+(4*5)]/x")
                 .variable("x")
                 .build()
@@ -292,10 +335,10 @@ public class Exp4jUtil {
 
         //test calculation
         String expressionStr = "[(2*3)+ (3*4)+(4*5)]/_1124e76845b141809a1ac3d1b158bb94";
-        Map<String,Double> variables = new HashMap<>();
-        variables.put("_1124e76845b141809a1ac3d1b158bb94",3D);
-        System.out.println(calculation(expressionStr,variables));
-        checkExpression();
+        Map<String, Double> variables = new HashMap<>();
+        variables.put("_1124e76845b141809a1ac3d1b158bb94", 3D);
+        System.out.println(calculation(expressionStr, variables, 2));
+        checkExpression(expressionStr, variables);
 
         example1();
         example2();
