@@ -1,5 +1,6 @@
 package com.hjc.learn;
 
+import com.hjc.learn.pool.ThreadPoolFactory;
 import io.swagger.annotations.Api;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -7,12 +8,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -20,6 +24,9 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import javax.annotation.PreDestroy;
+import java.util.concurrent.Executor;
 
 /**
  * @author houjichao
@@ -72,6 +79,25 @@ public class SpringBootLearnApplication {
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         return redisTemplate;
+    }
+
+    /**
+     * 加载自定义的线程池到容器中
+     * @return
+     */
+    @Bean("myExecutor")
+    @Primary
+    public Executor executor() {
+        return ThreadPoolFactory.INSTANCE().getDefaultThreadPool();
+    }
+
+
+    /**
+     * 项目销毁的时候，优雅关闭线程池
+     */
+    @PreDestroy
+    public void destroy() {
+        ThreadPoolFactory.INSTANCE().shutdown();
     }
 
 }
