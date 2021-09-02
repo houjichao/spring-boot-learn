@@ -15,7 +15,6 @@ public class IfElseServiceImpl implements IfElseService {
 
     @Override
     public void ifElseByEnum() {
-
         IfElseVO vo = new IfElseVO();
         vo.setOperator(1);
         vo.setName("houjichao");
