@@ -1,11 +1,11 @@
 package com.hjc.learn.service.impl;
 
+import com.hjc.learn.service.CommonMethodService;
 import com.hjc.learn.service.ThreadPoolDemoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -20,7 +20,7 @@ import java.util.concurrent.Executor;
  */
 @Service
 @Slf4j
-public class ThreadPoolDemoServiceImpl implements ThreadPoolDemoService {
+public class ThreadPoolDemoServiceImpl extends CommonMethodService implements ThreadPoolDemoService {
 
     @Resource(name = "myExecutor")
     Executor executor;
@@ -79,21 +79,22 @@ public class ThreadPoolDemoServiceImpl implements ThreadPoolDemoService {
         System.out.println("执行到最后一段代码了，future2 result: " + future2.get());
     }
 
-    //计算逻辑
-    private static Random random = new Random();
-    private static long time = System.currentTimeMillis();
-
-    private int getMoreData() {
-        log.info("getMoreData thread name:{}", Thread.currentThread().getName());
-        System.out.println("begin to start compute");
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("end to compute, passed:" + System.currentTimeMillis());
-        return random.nextInt(1000);
+    /**
+     * thenAccept* 返回的新的CompletableFuture对象不返回结果，如果使用get方法，会返回一个null。
+     *
+     * @throws Exception
+     */
+    @Override
+    public void completableFutureTestTwo() throws Exception {
+        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(this::getMoreData, executor);
+        CompletableFuture<Void> future2 = future.thenAccept(result -> {
+            log.info("执行到thenAccept了, result：" + result);
+            log.info("completableFutureTestTwo thread name:{}", Thread.currentThread().getName());
+        });
+        System.out.println("执行到最后一段代码了，future result：" + future.get());
+        System.out.println("执行到最后一段代码了，future2 result: " + future2.get());
     }
+
 
     private int throwException() {
         System.out.println("准备抛出异常");

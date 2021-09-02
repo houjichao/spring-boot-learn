@@ -34,4 +34,10 @@ public class ThreadTestController {
     public void thenAcceptBothAsync() throws Exception {
         threadPoolDemoService.completableFutureTestOne();
     }
+
+    @ApiOperation(value = "thenAccept测试")
+    @GetMapping("/thenAccept")
+    public void thenAccept() throws Exception {
+        threadPoolDemoService.completableFutureTestTwo();
+    }
 }

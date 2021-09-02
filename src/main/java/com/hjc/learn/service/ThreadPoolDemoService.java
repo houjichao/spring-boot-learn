@@ -19,4 +19,12 @@ public interface ThreadPoolDemoService {
      */
     void completableFutureTestOne() throws Exception;
 
+
+    /**
+     * thenAccept* 方法：纯消费一个CompletableFuture对象的结果
+     *
+     * @throws Exception
+     */
+    void completableFutureTestTwo() throws Exception;
+
 }
