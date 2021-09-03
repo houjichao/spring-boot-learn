@@ -17,9 +17,10 @@ public enum IfElseDemo {
     /**
      * 1
      */
-    FIRST_ENUM(1) {
+    FIRST_ENUM(1, "like ") {
         @Override
         public StringBuilder buildSql(IfElseVO vo, StringBuilder filters) {
+            filters.append(this.getName());
             filters.append(addFieldEscape(vo.getName(), SEPARATOR))
                     .append(" like ").append("'").append(vo.getName()).append("_DATA_SERVICE_Q?' ").append(" and ");
             return filters;
@@ -29,9 +30,10 @@ public enum IfElseDemo {
     /**
      * 2
      */
-    SECOND_ENUM(2) {
+    SECOND_ENUM(2, "not like") {
         @Override
         public StringBuilder buildSql(IfElseVO vo, StringBuilder filters) {
+            filters.append(this.getName());
             filters.append(addFieldEscape(vo.getName(), SEPARATOR))
                     .append(" not like ").append("'").append(vo.getName()).append("_DATA_SERVICE_Q?' ").append(" and ");
             return filters;
@@ -68,6 +70,8 @@ public enum IfElseDemo {
     }
 
     private final Integer type;
+
+    private final String name;
 
 
     private static String SEPARATOR = "`";
