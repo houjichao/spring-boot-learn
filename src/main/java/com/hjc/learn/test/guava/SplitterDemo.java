@@ -1,8 +1,10 @@
 package com.hjc.learn.test.guava;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -30,6 +32,12 @@ public class SplitterDemo {
 
         System.out.println(Splitter.onPattern(regex1).splitToList(sql).get(0));
 
+
+        String demo = "count(DISTINCT     aa.id,bb.id)";
+        String substring = demo.substring(demo.indexOf("(") + 1, demo.indexOf(")"));
+        System.out.println(substring);
+        List<String> strings = Splitter.on(" ").omitEmptyStrings().splitToList(substring);
+        System.out.println(JSONObject.toJSONString(strings));
 
     }
 
