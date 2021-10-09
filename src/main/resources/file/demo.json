@@ -1,0 +1,44 @@
+{
+  "action": "/interface.service/xxx/queryBlackUserData",
+  "all": "1",
+  "result": {
+    "count": 2,
+    "tenant_count": 2,
+    "records": [{
+      "name": "张三",
+      "pid": "500234199212121212",
+      "mobile": "18623456789",
+      "applied_at": "3",
+      "confirmed_at": "5",
+      "confirm_type": "overdue",
+      "loan_type": 1,
+      "test": "mytest",
+      "all": "2"
+    },
+      {
+        "name": "李四",
+        "pid": "500234199299999999",
+        "mobile": "13098765432",
+        "applied_at": "1",
+        "confirmed_at": "",
+        "confirm_type": "overdue",
+        "loan_type": 3,
+        "all": "3"
+      },
+      {
+        "name": "王五",
+        "pid": "50023415464654659",
+        "mobile": "1706454894",
+        "applied_at": "-1",
+        "confirmed_at": "",
+        "confirm_type": "overdue",
+        "loan_type": 3
+      }
+    ],
+    "all": "4"
+  },
+  "code": 200,
+  "subtime": "1480495123550",
+  "status": "success",
+  "ok": 3
+}
