@@ -326,10 +326,12 @@ public class Exp4jUtil {
 
 
     public static void main(String[] args) throws Exception {
-        Expression e = new ExpressionBuilder("[(2*3)+ (3*4)+(4*5)]/x")
+        Expression e = new ExpressionBuilder("2+12^y*(4*4)-2-2^x")
                 .variable("x")
+                .variable("y")
                 .build()
-                .setVariable("x", 3);
+                .setVariable("x", 3)
+                .setVariable("y", -3);
         double result = e.evaluate();
         System.out.println(result);
 

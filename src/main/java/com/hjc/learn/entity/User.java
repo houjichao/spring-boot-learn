@@ -29,6 +29,9 @@ public class User implements Serializable {
     @ApiModelProperty(value = "邮箱")
     private String email;
 
+    @ApiModelProperty(value = "手机号码")
+    private String phone;
+
     @TableLogic
     private Integer deleted;
 
