@@ -353,6 +353,14 @@ public class Exp4jUtil {
         example9();
         //example10();
         example12();
+
+
+        Expression expression = new ExpressionBuilder("2^x")
+                .variable("x")
+                .build()
+                .setVariable("x", 50.05);
+        result = expression.evaluate();
+        System.out.println(result);
     }
 
 
