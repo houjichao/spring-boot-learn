@@ -25,8 +25,16 @@ public class BusinessController {
 
     @ApiOperation(value = "span test")
     @GetMapping("/span")
-    public void get() {
+    public void span() {
         businessService.spanTest();
+    }
+
+
+    @ApiOperation(value = "redisson test")
+    @GetMapping("/redisson")
+    public Boolean redisson() {
+        businessService.redissonLock();
+        return true;
     }
 
 }

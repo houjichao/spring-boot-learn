@@ -6,4 +6,6 @@ package com.hjc.learn.service;
 public interface BusinessService {
 
     void spanTest();
+
+    void redissonLock();
 }
