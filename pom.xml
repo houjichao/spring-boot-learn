@@ -139,7 +139,7 @@
         <dependency>
             <artifactId>liquibase-core</artifactId>
             <groupId>org.liquibase</groupId>
-            <version>3.8.0</version>
+            <version>4.8.0</version>
         </dependency>
 
         <dependency>
